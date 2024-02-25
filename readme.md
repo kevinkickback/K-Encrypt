@@ -7,7 +7,7 @@ K Encrypt is a simple and user-friendly file encryption tool, offering the follo
 (*Only Windows app is provided. Mac and Linux versions must be compiled by the user.)
 
 ## Preview
-![K Encrypt Preview](preview_image_link_here)
+![K Encrypt Preview](https://github.com/kevinkickback/K-Encrypt/blob/main/preview.png)
 
 ## Downloads
 * Latest Version: [Download Now](download_link_here)
