@@ -1,0 +1,53 @@
+{
+  "name": "kencrypt",
+  "productName": "K Encrypt",
+  "version": "1.0.0",
+  "description": "Quick and easy file encryption",
+  "main": "./app/main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "kencrypt",
+    "mac": {
+      "icon": "./app/img/icon.icns",
+      "category": "public.app-category.utilities",
+      "target": "dmg"
+    },
+    "win": {
+      "icon": "./app/img/icon.ico",
+      "target": "portable"
+    },
+    "linux": {
+      "icon": "./app/img/icon.png",
+      "target": "appImage"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "./app/img/icon.ico",
+      "uninstallerIcon": "./app/img/icon.ico",
+      "uninstallDisplayName": "K Encrypt",
+      "license": "license.txt",
+      "allowToChangeInstallationDirectory": true
+    },
+    "portable": {
+      "splashImage": "./app/img/splash.bmp"
+    },
+    "appImage": {
+      "license": "license.txt"
+    }
+  },
+  "author": "Kixcel",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^23.3.13",
+    "electron-builder": "^23.6.0",
+    "electronmon": "^2.0.2"
+  },
+  "dependencies": {
+    "toastify-js": "^1.12.0"
+  }
+}

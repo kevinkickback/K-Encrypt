@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>K Encrypt</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/menu.css" />
+  <link rel="stylesheet" href="css/toastify.css" />
+</head>
+
+<body>
+  <!-- Main Window -->
+  <div id="main">
+
+    <!-- Loading Overlay -->
+    <div id="overlay">
+      <span id="spinner" class="loader"></span>
+      <span id="loadingText">Encrypting...</span>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-wrap">
+      <input type="checkbox" class="toggler">
+      <div class="hamburger">
+        <div></div>
+      </div>
+      <div class="menu">
+        <div>
+          <div>
+            <ul>
+              <li><a id="aboutLink" href="#about"><span class="icon solid fa-info-circle"> &nbsp;&nbsp;About</span></a></li>
+              <li><a id="licenseLink" href="#license"><span class="icon solid fa-file-contract"> &nbsp;&nbsp;License</span></a></li>
+              <!-- <li><label class="toggle">
+                  <input class="toggle-checkbox" type="checkbox" onclick="toggleDelete()" id="deleteCheckbox" checked>
+                  <div class="toggle-switch"></div>
+                  <span class="toggle-label">&nbsp;Delete original file</span>
+                </label>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Container -->
+    <section id="encrypt">
+
+      <div id="browse-container">
+        <label id="selectFileBtn" class="browse-label">
+          <span class="icon solid fa-folder"> BROWSE FILES</span>
+          <input id="file-picker" type="file" multiple="multiple" class="hidden" />
+        </label>
+      </div>
+
+      <div id="password-container">
+        <!-- Enter password field -->
+        <input type="password" id="password-input" placeholder="Enter Password" /><br>
+        <label for="password-input" id="toggle-password"><span class="icon solid fa-eye"></span></label>
+  
+        <!-- Confirm password field -->
+        <input type="password" id="password-input-2" placeholder="Confirm Password" />
+
+        <!-- Capslock warning
+        <div id="alert-box" class="warning">Attention:Caps lock is on.</div>
+        -->
+      </div>
+
+      <div id="files-container">
+        <div id="files-container-title">
+          <span id="files-container-title-text"><i class="icon solid fa-sort-down"></i> Selected Files <i class="icon solid fa-sort-down"></i></span>
+          <!-- LIST VIEW TOGGLES
+          <span>
+            <button id="singleView" onclick="singleView()"><i class="icon solid fa-list"></i></button>
+            <button id="doubleView" onclick="doubleView()"><i class="icon solid fa-th-large"></i></button>
+          </span>
+           -->
+        </div>
+        <div id="selected-files-container">
+          <ul class="row" id="selected-files"></ul>
+        </div>
+      </div>
+      
+
+
+      <button disabled id="clear-btn">
+        <span class="icon solid fa-trash"> Clear list</span>
+      </button>
+
+      <div id="encrypt-decrypt-btn-container">
+        <button id="encrypt-btn">
+          <span class="icon solid fa-lock"> Encrypt</span>
+        </button>
+        <button id="decrypt-btn">
+          <span class="icon solid fa-unlock"> Decrypt</span>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Scripts -->
+<!-- Delete original file toggle
+<script>
+let deleteEnabled = true;
+function toggleDelete() {
+  deleteEnabled = !deleteEnabled;
+  ipcExposed.send('toggle-delete', deleteEnabled);
+}
+</script>
+Scripts -->
+  <script type="module" src="./js/utils.js"></script>
+</body>
+
+</html>
