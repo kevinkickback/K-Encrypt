@@ -1,7 +1,7 @@
 {
   "name": "kencrypt",
   "productName": "K Encrypt",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Quick and easy file encryption",
   "main": "./app/main.js",
   "scripts": {

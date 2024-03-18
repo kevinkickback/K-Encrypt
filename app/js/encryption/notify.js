@@ -68,47 +68,54 @@ export function passwordError2() {
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 const div = document.getElementById("files-container");
+const successSfx = new Audio('./sfx/success.mp3');
+const failureSfx = new Audio('./sfx/failure.mp3');
 
-// Push success taost notification
+// Push success toast notification
 function alertSuccess(message) {
-    Toastify.toast({
-      text: message,
-      duration: 2000,
-      position: "center",
-      close: false,
-      stopOnFocus: false,
-      className: "success",
-      selector: div,
-      onClick: function() {
-        var selToast = document.querySelector(".on");
-        if (selToast) {
-          selToast.classList.remove("on");
-          setTimeout(function() {
+  Toastify.toast({
+    text: message,
+    duration: 2000,
+    position: "center",
+    close: false,
+    stopOnFocus: false,
+    className: "success",
+    selector: div,
+    onClick: function () {
+      var selToast = document.querySelector(".on");
+      if (selToast) {
+        selToast.classList.remove("on");
+        setTimeout(function () {
           selToast.style.display = "none";
-          }, 800);
-        }
+        }, 800);
       }
-    });
-  }
-  
-  // Push error taost notification
-  export function alertError(message) {
-    Toastify.toast({
-      text: message,
-      duration: 2000,
-      position: "center",
-      close: false,
-      stopOnFocus: false,
-      className: "error",
-      selector: div,
-      onClick: function() {
-        var selToast = document.querySelector(".on");
-        if (selToast) {
-          selToast.classList.remove("on");
-          setTimeout(function() {
+    }
+  });
+
+  successSfx.play();
+}
+
+
+// Push error taost notification
+export function alertError(message) {
+  Toastify.toast({
+    text: message,
+    duration: 2000,
+    position: "center",
+    close: false,
+    stopOnFocus: false,
+    className: "error",
+    selector: div,
+    onClick: function () {
+      var selToast = document.querySelector(".on");
+      if (selToast) {
+        selToast.classList.remove("on");
+        setTimeout(function () {
           selToast.style.display = "none";
-          }, 800);
-        }
+        }, 800);
       }
-    });
-  }
+    }
+  });
+
+  failureSfx.play();
+}
