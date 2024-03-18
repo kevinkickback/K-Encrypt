@@ -169,6 +169,8 @@ async function clickHandler(ipcEventName) {
   } catch (error) {
     if (error.message.includes('not_enc')) {
       alertError('File(s) are not encrypted!');
+    } else if (error.message.includes('already_enc')) {
+      alertError('File(s) already encrypted!');
     } else {
       alertError('Wrong Password!');
     }
