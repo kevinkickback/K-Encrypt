@@ -31,8 +31,10 @@
         <div>
           <div>
             <ul>
-              <li><a id="aboutLink" href="#about"><span class="icon solid fa-info-circle"> &nbsp;&nbsp;About</span></a></li>
-              <li><a id="licenseLink" href="#license"><span class="icon solid fa-file-contract"> &nbsp;&nbsp;License</span></a></li>
+              <li><a id="aboutLink" href="#about"><span class="icon solid fa-info-circle"> &nbsp;&nbsp;About</span></a>
+              </li>
+              <li><a id="licenseLink" href="#license"><span class="icon solid fa-file-contract">
+                    &nbsp;&nbsp;License</span></a></li>
               <!-- <li><label class="toggle">
                   <input class="toggle-checkbox" type="checkbox" onclick="toggleDelete()" id="deleteCheckbox" checked>
                   <div class="toggle-switch"></div>
@@ -59,7 +61,7 @@
         <!-- Enter password field -->
         <input type="password" id="password-input" placeholder="Enter Password" /><br>
         <label for="password-input" id="toggle-password"><span class="icon solid fa-eye"></span></label>
-  
+
         <!-- Confirm password field -->
         <input type="password" id="password-input-2" placeholder="Confirm Password" />
 
@@ -70,7 +72,8 @@
 
       <div id="files-container">
         <div id="files-container-title">
-          <span id="files-container-title-text"><i class="icon solid fa-sort-down"></i> Selected Files <i class="icon solid fa-sort-down"></i></span>
+          <span id="files-container-title-text"><i class="icon solid fa-sort-down"></i> Selected Files <i
+              class="icon solid fa-sort-down"></i></span>
           <!-- LIST VIEW TOGGLES
           <span>
             <button id="singleView" onclick="singleView()"><i class="icon solid fa-list"></i></button>
@@ -82,7 +85,7 @@
           <ul class="row" id="selected-files"></ul>
         </div>
       </div>
-      
+
 
 
       <button disabled id="clear-btn">
@@ -101,7 +104,7 @@
   </div>
 
   <!-- Scripts -->
-<!-- Delete original file toggle
+  <!-- Delete original file toggle
 <script>
 let deleteEnabled = true;
 function toggleDelete() {

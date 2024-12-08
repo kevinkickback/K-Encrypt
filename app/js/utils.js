@@ -2,8 +2,8 @@
 // ║ IMPORTS & DECLARATIONS                                                               ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-import { encryptionDone, decryptionDone, passwordError, passwordError2,  noFilesSelected, alertError } from "./encryption/notify.js";
-export let filesList = [];
+import { encryptionDone, decryptionDone, passwordError, passwordError2, noFilesSelected, alertError } from "./encryption/notify.js";
+export const filesList = [];
 const browseFilesBtn = document.querySelector("#file-picker");
 const selectedFiles = document.querySelector("#selected-files");
 const dropArea = document.querySelector("#main");
@@ -16,13 +16,13 @@ const togglePasswordBtn = document.querySelector("#toggle-password");
 // const capsLockWarning = document.getElementById('alert-box');
 
 
-
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ SELECT FILES                                                                         ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 // Add event listeners to browse button and drag n' drop
 browseFilesBtn.addEventListener("change", (e) => getFiles(e));
+// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
 browseFilesBtn.addEventListener("click", (e) => (e.target.value = null));
 
 // Disable default drag element behavior
@@ -53,7 +53,7 @@ dropArea.addEventListener("drop", (e) => {
 
 // Handle files from either method (browse or drag)
 function handleFiles(files) {
-  for (let file of files) {
+  for (const file of files) {
     if (!filesList.includes(file.path)) {
       const element = `
       <li>
@@ -93,13 +93,13 @@ togglePasswordBtn.addEventListener("click", togglePassword);
 
 function togglePassword() {
   if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      togglePasswordBtn.innerHTML = '<span class="icon solid fa-eye-slash"></span>';
-      passwordInput2.style.display = 'none';
+    passwordInput.type = "text";
+    togglePasswordBtn.innerHTML = '<span class="icon solid fa-eye-slash"></span>';
+    passwordInput2.style.display = 'none';
   } else {
-      passwordInput.type = "password";
-      togglePasswordBtn.innerHTML = '<span class="icon solid fa-eye"></span>';
-      passwordInput2.style.display = 'flex';
+    passwordInput.type = "password";
+    togglePasswordBtn.innerHTML = '<span class="icon solid fa-eye"></span>';
+    passwordInput2.style.display = 'flex';
   }
 }
 
@@ -123,13 +123,13 @@ async function clickHandler(ipcEventName) {
   if (filesList.length === 0) {
     noFilesSelected();
     return;
-  } else if (password.length === 0) {
+  }if (password.length === 0) {
     passwordError();
     return;
-  } else if (passwordInput2.style.display !== 'none' && password2.length === 0) {
+  }if (passwordInput2.style.display !== 'none' && password2.length === 0) {
     passwordError2();
     return;
-  } else if (passwordInput2.style.display !== 'none' && password !== password2) {
+  }if (passwordInput2.style.display !== 'none' && password !== password2) {
     alertError('Passwords do not match.');
     return;
   }
@@ -151,8 +151,8 @@ async function clickHandler(ipcEventName) {
           encryptionDone();
           // Hide multiple toast notifications when processing multiple files
           if (toast.length > 1) {
-          for (let i = 1; i < toast.length; i++) {
-            toast[i].style.display = 'none';
+            for (let i = 1; i < toast.length; i++) {
+              toast[i].style.display = 'none';
             }
           }
         } else if (ipcEventName === 'decrypt-file') {
@@ -161,8 +161,8 @@ async function clickHandler(ipcEventName) {
           if (toast.length > 1) {
             for (let i = 1; i < toast.length; i++) {
               toast[i].style.display = 'none';
-              }
             }
+          }
         }
       })
     )
@@ -185,7 +185,7 @@ async function clickHandler(ipcEventName) {
 
 document.addEventListener('mousedown', (event) => {
   if (event.target.tagName !== 'INPUT' || event.target.type !== 'password') {
-      event.preventDefault();
+    event.preventDefault();
   }
 });
 
@@ -194,16 +194,16 @@ document.addEventListener('mousedown', (event) => {
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 function toggleOverlay(show, icon, message) {
-const overlay = document.getElementById("overlay");
-const spinner = document.getElementById("spinner");
-const text = document.getElementById("loadingText");
-if (show) {
-  spinner.className = icon;
-  text.innerHTML = message;
-  overlay.style.display = "flex";
-} else {
-  overlay.style.display = "none";
-}
+  const overlay = document.getElementById("overlay");
+  const spinner = document.getElementById("spinner");
+  const text = document.getElementById("loadingText");
+  if (show) {
+    spinner.className = icon;
+    text.innerHTML = message;
+    overlay.style.display = "flex";
+  } else {
+    overlay.style.display = "none";
+  }
 }
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
@@ -214,25 +214,25 @@ const aboutLink = document.getElementById('aboutLink');
 const licenseLink = document.getElementById('licenseLink');
 
 aboutLink.addEventListener('click', (event) => {
-const checkbox = document.querySelector('input[type="checkbox"]');
-if (checkbox) {
-  checkbox.checked = false;
-}
+  const checkbox = document.querySelector('input[type="checkbox"]');
+  if (checkbox) {
+    checkbox.checked = false;
+  }
 
-setTimeout(() => {
-  ipcExposed.send('modalWindow', 'about');
-}, 200);
+  setTimeout(() => {
+    ipcExposed.send('modalWindow', 'about');
+  }, 200);
 });
 
 licenseLink.addEventListener('click', (event) => {
-const checkbox = document.querySelector('input[type="checkbox"]');
-if (checkbox) {
-  checkbox.checked = false;
-}
+  const checkbox = document.querySelector('input[type="checkbox"]');
+  if (checkbox) {
+    checkbox.checked = false;
+  }
 
-setTimeout(() => {
-  ipcExposed.send('modalWindow', 'license');
-}, 200);
+  setTimeout(() => {
+    ipcExposed.send('modalWindow', 'license');
+  }, 200);
 });
 
 

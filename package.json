@@ -43,9 +43,11 @@
   "author": "Kixcel",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "1.6.3",
     "electron": "^23.3.13",
     "electron-builder": "^23.6.0",
-    "electronmon": "^2.0.2"
+    "electronmon": "^2.0.2",
+    "eslint": "^8.57.0"
   },
   "dependencies": {
     "toastify-js": "^1.12.0"
