@@ -23,6 +23,10 @@ html {
 *:after {
   box-sizing: inherit;
   cursor: inherit;
+  user-select: none;
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-app-region: no-drag;
 }
 
 body {

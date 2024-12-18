@@ -10,16 +10,16 @@ const Toastify = require("toastify-js");
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 contextBridge.exposeInMainWorld("ipcExposed", {
-	send: (channel, data) => {
-		ipcRenderer.send(channel, data);
+	send: (channel, ...args) => {
+		ipcRenderer.send(channel, ...args);
 	},
 	on: (channel, callback) => {
-		ipcRenderer.on(channel, (event, data) => {
-			callback(data);
-		});
+		const listener = (event, ...args) => callback(...args);
+		ipcRenderer.on(channel, listener);
+		return () => ipcRenderer.removeListener(channel, listener);
 	},
-	invoke: (channel, data) => {
-		return ipcRenderer.invoke(channel, data);
+	invoke: (channel, ...args) => {
+		return ipcRenderer.invoke(channel, ...args);
 	},
 });
 

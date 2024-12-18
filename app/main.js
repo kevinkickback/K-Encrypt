@@ -19,6 +19,7 @@ function createMainWindow() {
 		webPreferences: {
 			sandbox: false,
 			contextIsolation: true,
+			nodeIntegration: false,
 			preload: path.join(__dirname, "js", "preload.js"),
 		},
 	});

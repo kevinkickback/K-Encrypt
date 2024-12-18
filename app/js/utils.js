@@ -123,13 +123,13 @@ async function clickHandler(ipcEventName) {
   if (filesList.length === 0) {
     noFilesSelected();
     return;
-  }if (password.length === 0) {
+  } if (password.length === 0) {
     passwordError();
     return;
-  }if (passwordInput2.style.display !== 'none' && password2.length === 0) {
+  } if (passwordInput2.style.display !== 'none' && password2.length === 0) {
     passwordError2();
     return;
-  }if (passwordInput2.style.display !== 'none' && password !== password2) {
+  } if (passwordInput2.style.display !== 'none' && password !== password2) {
     alertError('Passwords do not match.');
     return;
   }
@@ -179,15 +179,6 @@ async function clickHandler(ipcEventName) {
   }
 }
 
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ DISABLE DRAGGING ELEMENTS                                                            ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-document.addEventListener('mousedown', (event) => {
-  if (event.target.tagName !== 'INPUT' || event.target.type !== 'password') {
-    event.preventDefault();
-  }
-});
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ TOGGLE OVERLAY                                                                       ║

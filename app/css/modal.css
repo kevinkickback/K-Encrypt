@@ -6,6 +6,17 @@
 
 @import url("fontawesome-all.min.css");
 
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  cursor: inherit;
+  user-select: none;
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-app-region: no-drag;
+}
+
 html, body, div, span, applet, h1, h2, h3, h4, h5, h6, p, s, samp, small, strike, strong, sub, sup, tt, var, 
 b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, 
 tr, th, td, embed, figure, figcaption, footer, header, hgroup {
@@ -67,8 +78,9 @@ body {
 
   a {
     color: #FFF;
+    cursor: pointer;
   }
-
+  
   .icon:before {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
