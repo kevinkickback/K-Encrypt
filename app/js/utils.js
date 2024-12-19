@@ -13,8 +13,6 @@ const passwordInput2 = document.querySelector("#password-input-2");
 const encryptBtn = document.querySelector("#encrypt-btn");
 const decryptBtn = document.querySelector("#decrypt-btn");
 const togglePasswordBtn = document.querySelector("#toggle-password");
-// const capsLockWarning = document.getElementById('alert-box');
-
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ SELECT FILES                                                                         ║
@@ -22,8 +20,11 @@ const togglePasswordBtn = document.querySelector("#toggle-password");
 
 // Add event listeners to browse button and drag n' drop
 browseFilesBtn.addEventListener("change", (e) => getFiles(e));
-// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-browseFilesBtn.addEventListener("click", (e) => (e.target.value = null));
+
+// Reset input's value to ensure the same file can be reselected
+browseFilesBtn.addEventListener("click", (e) => {
+  e.target.value = null;
+});
 
 // Disable default drag element behavior
 dropArea.addEventListener("dragover", (e) => {
@@ -41,7 +42,6 @@ dropArea.addEventListener("dragleave", (e) => {
     toggleOverlay(false);
   }
 });
-
 
 // Disable overlay on drop and add files to list
 dropArea.addEventListener("drop", (e) => {
@@ -212,48 +212,3 @@ licenseLink.addEventListener('click', (event) => {
     ipcExposed.send('modalWindow', 'license');
   }, 200);
 });
-
-
-// // ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// // ║ CAPSLOCK WARNING                                                                     ║
-// // ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-// document.addEventListener('keydown', (event) => {
-//   const capsLockIsOn = event.getModifierState && event.getModifierState('CapsLock');
-//   capsLockWarning.style.display = capsLockIsOn ? 'flex' : 'none';
-//  });
-
-
-// // ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// // ║ FILE VIEW TOGGLE                                                                     ║
-// // ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-// var singleBtn = document.getElementById("singleView");
-// var doubleBtn = document.getElementById("doubleView");
-// var elements = document.getElementsByClassName("column");
-// var fileList = document.getElementById("selected-files");
-// var i;
-
-// // Single View
-// function singleView() {
-// singleBtn.style.backgroundColor = "#3d3d3d";
-// singleBtn.style.borderBottom = "none";
-// doubleBtn.style.backgroundColor = "#777777";
-// doubleBtn.style.borderBottom = "1px solid #edf2f7";
-// fileList.classList.remove("doubleColumn");
-// for (i = 0; i < elements.length; i++) {
-//   elements[i].style.width = "100%";
-// }
-// }
-
-// // Double View
-// function doubleView() {
-// doubleBtn.style.backgroundColor = "#3d3d3d";
-// doubleBtn.style.borderBottom = "none";
-// singleBtn.style.backgroundColor = "#777777";
-// singleBtn.style.borderBottom = "1px solid #edf2f7";
-// fileList.classList.add("doubleColumn");
-// for (i = 0; i < elements.length; i++) {
-//   elements[i].style.width = "50%";
-// }
-// }

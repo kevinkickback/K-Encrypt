@@ -31,7 +31,7 @@ function createMainWindow() {
 	});
 
 	// Load our HTML file
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 	mainWindow.loadFile(path.join(__dirname, "index.html"));
 
 	// Adjust window size if devTools are enabled
@@ -147,6 +147,10 @@ ipcMain.on("modalWindow", (event, type) => {
 	createModalWindow(type);
 });
 
+// ╔══════════════════════════════════════════════════════════════════════════════════════╗
+// ║ ENCYPTION                                                                            ║
+// ╚══════════════════════════════════════════════════════════════════════════════════════╝
+
 // Encrypt file
 ipcMain.handle("encrypt-file", async (event, { fileLocation, password }) => {
 	const result = await encryptFile(fileLocation, password);
@@ -159,6 +163,9 @@ ipcMain.handle("decrypt-file", async (event, { fileLocation, password }) => {
 	return result;
 });
 
+// ╔══════════════════════════════════════════════════════════════════════════════════════╗
+// ║ ALERT NOTIFICATIONS                                                                  ║
+// ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 // Success alert handler
 ipcMain.handle("notify-success", (event, message) => {
@@ -183,3 +190,7 @@ ipcMain.handle("notify-error", (event, message) => {
 
 	return "failure";
 });
+
+// ╔══════════════════════════════════════════════════════════════════════════════════════╗
+// ║ ENCYPTION                                                                            ║
+// ╚══════════════════════════════════════════════════════════════════════════════════════╝
