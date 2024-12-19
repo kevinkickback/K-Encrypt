@@ -64,70 +64,25 @@ export function passwordError2() {
 }
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ TOASTIFY FUNCTIONS                                                                   ║
+// ║ ALERT FUNCTIONS                                                                      ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-const div = document.getElementById("files-container");
-const successSfx = new Audio("./sfx/success.mp3");
-const failureSfx = new Audio("./sfx/failure.mp3");
+export async function alertSuccess(message) {
+	const result = await window.ipcExposed.invoke("notify-success", message);
 
-// Push success toast notification
-function alertSuccess(message) {
-	Toastify.toast({
-		text: message,
-		duration: 3000,
-		position: "center",
-		close: false,
-		stopOnFocus: false,
-		className: "success",
-		selector: div,
-		onClick: () => {
-			const selToast = document.querySelector(".on");
-			if (selToast) {
-				selToast.classList.remove("on");
-				setTimeout(() => {
-					selToast.style.display = "none";
-				}, 800);
-			}
-		},
-	});
-
-	successSfx.play();
+	if (result) {
+		// Play success sound in the renderer process
+		const successSfx = new Audio("./sfx/success.mp3");
+		successSfx.play();
+	}
 }
 
-// Push error taost notification
-export function alertError(message) {
-	Toastify.toast({
-		text: message,
-		duration: 3000,
-		position: "center",
-		close: false,
-		stopOnFocus: false,
-		className: "error",
-		selector: div,
-		onClick: () => {
-			const selToast = document.querySelector(".on");
-			if (selToast) {
-				selToast.classList.remove("on");
-				setTimeout(() => {
-					selToast.style.display = "none";
-				}, 800);
-			}
-		},
-	});
+export async function alertError(message) {
+	const result = await window.ipcExposed.invoke("notify-error", message);
 
-	failureSfx.play();
+	if (result) {
+		// Play success sound in the renderer process
+		const errorSfx = new Audio("./sfx/failure.mp3");
+		errorSfx.play();
+	}
 }
-
-// // Push info toast notification
-// export function alertInfo(message) {
-// 	Toastify.toast({
-// 		text: message,
-// 		duration: -1,
-// 		position: "center",
-// 		close: false,
-// 		stopOnFocus: false,
-// 		className: "info",
-// 		selector: div,
-// 	});
-// }

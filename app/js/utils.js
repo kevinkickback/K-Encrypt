@@ -143,26 +143,13 @@ async function clickHandler(ipcEventName) {
 
     await Promise.all(
       filesList.map(async (fileLocation) => {
-        const toast = document.querySelectorAll('.toastify');
         const result = await ipcExposed.invoke(ipcEventName, { fileLocation, password });
         const newFileLocation = result.newFileLocation;
         filesList[filesList.indexOf(fileLocation)] = newFileLocation;
         if (ipcEventName === 'encrypt-file') {
           encryptionDone();
-          // Hide multiple toast notifications when processing multiple files
-          if (toast.length > 1) {
-            for (let i = 1; i < toast.length; i++) {
-              toast[i].style.display = 'none';
-            }
-          }
         } else if (ipcEventName === 'decrypt-file') {
           decryptionDone();
-          // Hide multiple toast notifications when processing multiple files
-          if (toast.length > 1) {
-            for (let i = 1; i < toast.length; i++) {
-              toast[i].style.display = 'none';
-            }
-          }
         }
       })
     )

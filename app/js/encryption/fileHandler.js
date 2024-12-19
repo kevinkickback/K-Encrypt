@@ -14,10 +14,6 @@ const decHighWaterMark = encHighWaterMark + 32;
 
 const deleteEnabled = true;
 
-// // Listen for delete file setting
-// ipcMain.on("toggle-delete", (event, isEnabled) => {
-//   deleteEnabled = isEnabled;
-// });
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ EN/DECRYPT FILE OPERATIONS                                                           ║

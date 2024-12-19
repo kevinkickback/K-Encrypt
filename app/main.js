@@ -2,7 +2,7 @@
 // ║ IMPORTS & DECLARATIONS                                                               ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-const { app, BrowserWindow, ipcMain, Menu, shell } = require("electron");
+const { app, BrowserWindow, dialog, ipcMain, Menu, shell } = require("electron");
 const path = require("node:path");
 const { encryptFile, decryptFile } = require("./js/encryption/fileHandler.js");
 
@@ -17,7 +17,7 @@ function createMainWindow() {
 		resizable: false,
 		icon: path.resolve(__dirname, "img", "icon.ico"),
 		webPreferences: {
-			sandbox: false,
+			sandbox: true,
 			contextIsolation: true,
 			nodeIntegration: false,
 			preload: path.join(__dirname, "js", "preload.js"),
@@ -31,7 +31,7 @@ function createMainWindow() {
 	});
 
 	// Load our HTML file
-	//mainWindow.webContents.openDevTools();
+	mainWindow.webContents.openDevTools();
 	mainWindow.loadFile(path.join(__dirname, "index.html"));
 
 	// Adjust window size if devTools are enabled
@@ -157,4 +157,29 @@ ipcMain.handle("encrypt-file", async (event, { fileLocation, password }) => {
 ipcMain.handle("decrypt-file", async (event, { fileLocation, password }) => {
 	const result = await decryptFile(fileLocation, password);
 	return result;
+});
+
+
+// Success alert handler
+ipcMain.handle("notify-success", (event, message) => {
+	dialog.showMessageBox(mainWindow, {
+		type: "info",
+		buttons: ["OK"],
+		title: "Success",
+		message: message,
+	});
+
+	return "success";
+});
+
+// Error alert handler
+ipcMain.handle("notify-error", (event, message) => {
+	dialog.showMessageBox(mainWindow, {
+		type: "error",
+		buttons: ["OK"],
+		title: "Error",
+		message: message,
+	});
+
+	return "failure";
 });
