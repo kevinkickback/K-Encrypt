@@ -7,17 +7,12 @@ const path = require("node:path");
 const fs = require("node:fs");
 const { pipeline } = require("node:stream/promises");
 const { Transform } = require("node:stream");
-// const { ipcMain } = require("electron");
 
 const encHighWaterMark = 1024 * 1024 * 100;
 const decHighWaterMark = encHighWaterMark + 32;
 
 const deleteEnabled = true;
 
-// // Listen for delete file setting
-// ipcMain.on("toggle-delete", (event, isEnabled) => {
-//   deleteEnabled = isEnabled;
-// });
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ EN/DECRYPT FILE OPERATIONS                                                           ║

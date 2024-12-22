@@ -9,6 +9,8 @@ const passwordInput2 = document.querySelector("#password-input-2");
 const togglePassword = document.querySelector("#toggle-password");
 const selectedFiles = document.querySelector("#selected-files");
 const clearAllBtn = document.querySelector("#clear-btn");
+const successSfx = new Audio("./sfx/success.mp3");
+const errorSfx = new Audio("./sfx/failure.mp3");
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ EN/DECRYPTION FINISHED                                                               ║
@@ -37,6 +39,7 @@ export function decryptionDone() {
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 export function noFilesSelected() {
+	errorSfx.play();
 	selectFiles.classList.add("flash-file-select");
 	setTimeout(() => {
 		selectFiles.classList.remove("flash-file-select");
@@ -48,6 +51,7 @@ export function noFilesSelected() {
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 export function passwordError() {
+	errorSfx.play();
 	passwordInput.classList.add("shake-password-box");
 	togglePassword.classList.add("shake-password-box");
 	setTimeout(() => {
@@ -57,6 +61,7 @@ export function passwordError() {
 }
 
 export function passwordError2() {
+	errorSfx.play();
 	passwordInput2.classList.add("shake-password-box");
 	setTimeout(() => {
 		passwordInput2.classList.remove("shake-password-box");
@@ -64,70 +69,21 @@ export function passwordError2() {
 }
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ TOASTIFY FUNCTIONS                                                                   ║
+// ║ ALERT FUNCTIONS                                                                      ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-const div = document.getElementById("files-container");
-const successSfx = new Audio("./sfx/success.mp3");
-const failureSfx = new Audio("./sfx/failure.mp3");
+export async function alertSuccess(message) {
+	const result = await window.ipcExposed.invoke("notify-success", message);
 
-// Push success toast notification
-function alertSuccess(message) {
-	Toastify.toast({
-		text: message,
-		duration: 3000,
-		position: "center",
-		close: false,
-		stopOnFocus: false,
-		className: "success",
-		selector: div,
-		onClick: () => {
-			const selToast = document.querySelector(".on");
-			if (selToast) {
-				selToast.classList.remove("on");
-				setTimeout(() => {
-					selToast.style.display = "none";
-				}, 800);
-			}
-		},
-	});
-
-	successSfx.play();
+	if (result) {
+		successSfx.play();
+	}
 }
 
-// Push error taost notification
-export function alertError(message) {
-	Toastify.toast({
-		text: message,
-		duration: 3000,
-		position: "center",
-		close: false,
-		stopOnFocus: false,
-		className: "error",
-		selector: div,
-		onClick: () => {
-			const selToast = document.querySelector(".on");
-			if (selToast) {
-				selToast.classList.remove("on");
-				setTimeout(() => {
-					selToast.style.display = "none";
-				}, 800);
-			}
-		},
-	});
+export async function alertError(message) {
+	const result = await window.ipcExposed.invoke("notify-error", message);
 
-	failureSfx.play();
+	if (result) {
+		errorSfx.play();
+	}
 }
-
-// // Push info toast notification
-// export function alertInfo(message) {
-// 	Toastify.toast({
-// 		text: message,
-// 		duration: -1,
-// 		position: "center",
-// 		close: false,
-// 		stopOnFocus: false,
-// 		className: "info",
-// 		selector: div,
-// 	});
-// }

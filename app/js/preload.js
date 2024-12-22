@@ -3,7 +3,6 @@
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 const { contextBridge, ipcRenderer } = require("electron");
-const Toastify = require("toastify-js");
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ EXPOSE IPC RENDERER METHODS                                                          ║
@@ -21,12 +20,4 @@ contextBridge.exposeInMainWorld("ipcExposed", {
 	invoke: (channel, ...args) => {
 		return ipcRenderer.invoke(channel, ...args);
 	},
-});
-
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ EXPOSE TOSTIFY                                                                       ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-contextBridge.exposeInMainWorld("Toastify", {
-	toast: (options) => Toastify(options).showToast(),
 });

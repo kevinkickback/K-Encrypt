@@ -2,48 +2,54 @@
 // ║ IMPORTS & DECLARATIONS                                                               ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-const { app, BrowserWindow, ipcMain, Menu, shell } = require("electron");
-const path = require("node:path");
+const { app, BrowserWindow, dialog, ipcMain, Menu, shell } = require("electron");
 const { encryptFile, decryptFile } = require("./js/encryption/fileHandler.js");
+const path = require("node:path");
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ CREATE MAIN WINDOW                                                                   ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 function createMainWindow() {
+
 	const mainWindow = new BrowserWindow({
 		width: 400,
 		height: 500,
 		resizable: false,
-		icon: path.resolve(__dirname, "img", "icon.ico"),
+		icon: path.resolve(__dirname, 'img', 'icon.ico'),
 		webPreferences: {
-			sandbox: false,
+			sandbox: true,
 			contextIsolation: true,
 			nodeIntegration: false,
-			preload: path.join(__dirname, "js", "preload.js"),
-		},
+			preload: path.join(__dirname, 'js', 'preload.js')
+		}
 	});
 
-	// Event listeners on the window
+	// Show and focus mainWindow after loading
 	mainWindow.webContents.on("did-finish-load", () => {
 		mainWindow.show();
 		mainWindow.focus();
 	});
 
-	// Load our HTML file
-	//mainWindow.webContents.openDevTools();
-	mainWindow.loadFile(path.join(__dirname, "index.html"));
+	// Load HTML file
+	mainWindow.loadFile(path.join(__dirname, 'index.html'));
+
+	// Uncomment to open devTools for debugging
+	// mainWindow.webContents.openDevTools();
 
 	// Adjust window size if devTools are enabled
 	mainWindow.webContents.on("devtools-opened", () => {
-		mainWindow.setSize(800, mainWindow.getSize()[1]);
+		mainWindow.setSize(800, 800, mainWindow.getSize()[1]);
 	});
 
 	// Links open externaly if target="_blank"
 	mainWindow.webContents.setWindowOpenHandler((details) => {
 		shell.openExternal(details.url);
-		return { action: "deny" };
+		return { action: 'deny' }
 	});
+
+	// Set custom menu for mainWindow (or use null to hide)
+	mainWindow.setMenu(null);
 
 	// Return mainWindow for use outside of function
 	return mainWindow;
@@ -53,7 +59,8 @@ function createMainWindow() {
 // ║ CREATE MODAL WINDOW                                                                  ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-function createModalWindow(type) {
+function createModalWindow(type, menu) {
+
 	const parentBounds = mainWindow.getBounds();
 	const centerX = parentBounds.x + parentBounds.width / 2 - 150;
 	const centerY = parentBounds.y + parentBounds.height / 2 - 150;
@@ -76,7 +83,6 @@ function createModalWindow(type) {
 	});
 
 	// Load different HTML files based on type parameter
-	//modalWindow.webContents.openDevTools();
 	switch (type) {
 		case "about":
 			modalWindow.loadFile(path.join(__dirname, "about.html"));
@@ -92,16 +98,26 @@ function createModalWindow(type) {
 			break;
 	}
 
+	// Uncomment to open devTools for debugging
+	// modalWindow.webContents.openDevTools();
+
 	// Adjust window size if devTools are enabled
 	modalWindow.webContents.on("devtools-opened", () => {
-		modalWindow.setSize(800, 800);
+		modalWindow.setSize(600, modalWindow.getSize()[1]);
 	});
 
 	// Links open externaly if target="_blank"
 	modalWindow.webContents.setWindowOpenHandler((details) => {
 		shell.openExternal(details.url);
-		return { action: "deny" };
+		return { action: 'deny' }
 	});
+
+	// Set custom menu or hide it based on conidtion
+	if (menu === "on") {
+		modalWindow.setMenu(customMenu);
+	} else {
+		modalWindow.setMenu(null);
+	}
 
 	// Return modalWindow for use outside of function
 	return modalWindow;
@@ -139,13 +155,16 @@ app.on("window-all-closed", () => {
 
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ IPC HANDELING                                                                        ║
+// ║ OPEN MODAL WINDOW                                                                    ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-// Open modal window
-ipcMain.on("modalWindow", (event, type) => {
-	createModalWindow(type);
+ipcMain.on('modalWindow', (event, type, menu) => {
+	createModalWindow(type, menu);
 });
+
+// ╔══════════════════════════════════════════════════════════════════════════════════════╗
+// ║ ENCYPTION                                                                            ║
+// ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 // Encrypt file
 ipcMain.handle("encrypt-file", async (event, { fileLocation, password }) => {
@@ -157,4 +176,32 @@ ipcMain.handle("encrypt-file", async (event, { fileLocation, password }) => {
 ipcMain.handle("decrypt-file", async (event, { fileLocation, password }) => {
 	const result = await decryptFile(fileLocation, password);
 	return result;
+});
+
+// ╔══════════════════════════════════════════════════════════════════════════════════════╗
+// ║ ALERT NOTIFICATIONS                                                                  ║
+// ╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+// Success alert handler
+ipcMain.handle("notify-success", (event, message) => {
+	dialog.showMessageBox(mainWindow, {
+		type: "info",
+		buttons: ["OK"],
+		title: "Success",
+		message: message,
+	});
+
+	return "success";
+});
+
+// Error alert handler
+ipcMain.handle("notify-error", (event, message) => {
+	dialog.showMessageBox(mainWindow, {
+		type: "error",
+		buttons: ["OK"],
+		title: "Error",
+		message: message,
+	});
+
+	return "failure";
 });
