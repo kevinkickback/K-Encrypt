@@ -198,7 +198,7 @@ aboutLink.addEventListener('click', (event) => {
   }
 
   setTimeout(() => {
-    ipcExposed.send('modalWindow', 'about');
+    ipcExposed.send('modalWindow', 'about', 'off');
   }, 200);
 });
 
@@ -209,6 +209,6 @@ licenseLink.addEventListener('click', (event) => {
   }
 
   setTimeout(() => {
-    ipcExposed.send('modalWindow', 'license');
+    ipcExposed.send('modalWindow', 'license', 'off');
   }, 200);
 });

@@ -9,6 +9,8 @@ const passwordInput2 = document.querySelector("#password-input-2");
 const togglePassword = document.querySelector("#toggle-password");
 const selectedFiles = document.querySelector("#selected-files");
 const clearAllBtn = document.querySelector("#clear-btn");
+const successSfx = new Audio("./sfx/success.mp3");
+const errorSfx = new Audio("./sfx/failure.mp3");
 
 // ╔══════════════════════════════════════════════════════════════════════════════════════╗
 // ║ EN/DECRYPTION FINISHED                                                               ║
@@ -37,6 +39,7 @@ export function decryptionDone() {
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 export function noFilesSelected() {
+	errorSfx.play();
 	selectFiles.classList.add("flash-file-select");
 	setTimeout(() => {
 		selectFiles.classList.remove("flash-file-select");
@@ -48,6 +51,7 @@ export function noFilesSelected() {
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 export function passwordError() {
+	errorSfx.play();
 	passwordInput.classList.add("shake-password-box");
 	togglePassword.classList.add("shake-password-box");
 	setTimeout(() => {
@@ -57,6 +61,7 @@ export function passwordError() {
 }
 
 export function passwordError2() {
+	errorSfx.play();
 	passwordInput2.classList.add("shake-password-box");
 	setTimeout(() => {
 		passwordInput2.classList.remove("shake-password-box");
@@ -71,8 +76,6 @@ export async function alertSuccess(message) {
 	const result = await window.ipcExposed.invoke("notify-success", message);
 
 	if (result) {
-		// Play success sound in the renderer process
-		const successSfx = new Audio("./sfx/success.mp3");
 		successSfx.play();
 	}
 }
@@ -81,8 +84,6 @@ export async function alertError(message) {
 	const result = await window.ipcExposed.invoke("notify-error", message);
 
 	if (result) {
-		// Play success sound in the renderer process
-		const errorSfx = new Audio("./sfx/failure.mp3");
 		errorSfx.play();
 	}
 }
