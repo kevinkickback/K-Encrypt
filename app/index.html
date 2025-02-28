@@ -35,12 +35,18 @@
               </li>
               <li><a id="licenseLink" href="#license"><span class="icon solid fa-file-contract">
                     &nbsp;&nbsp;License</span></a></li>
-              <!-- <li><label class="toggle">
-                  <input class="toggle-checkbox" type="checkbox" onclick="toggleDelete()" id="deleteCheckbox" checked>
+              <li><label class="toggle">
+                  <input class="toggle-checkbox" type="checkbox" id="soundToggle" checked>
                   <div class="toggle-switch"></div>
-                  <span class="toggle-label">&nbsp;Delete original file</span>
+                  <span class="toggle-label">&nbsp;Sound Effects</span>
                 </label>
-              </li> -->
+              </li>
+              <li><label class="toggle">
+                  <input class="toggle-checkbox" type="checkbox" id="deleteCheckbox" checked>
+                  <div class="toggle-switch"></div>
+                  <span class="toggle-label">&nbsp;Overwrite Files</span>
+                </label>
+              </li>
             </ul>
           </div>
         </div>
@@ -64,22 +70,12 @@
 
         <!-- Confirm password field -->
         <input type="password" id="password-input-2" placeholder="Confirm Password" />
-
-        <!-- Capslock warning
-        <div id="alert-box" class="warning">Attention:Caps lock is on.</div>
-        -->
       </div>
 
       <div id="files-container">
         <div id="files-container-title">
           <span id="files-container-title-text"><i class="icon solid fa-sort-down"></i> Selected Files <i
               class="icon solid fa-sort-down"></i></span>
-          <!-- LIST VIEW TOGGLES
-          <span>
-            <button id="singleView" onclick="singleView()"><i class="icon solid fa-list"></i></button>
-            <button id="doubleView" onclick="doubleView()"><i class="icon solid fa-th-large"></i></button>
-          </span>
-           -->
         </div>
         <div id="selected-files-container">
           <ul class="row" id="selected-files"></ul>
@@ -104,15 +100,6 @@
   </div>
 
   <!-- Scripts -->
-  <!-- Delete original file toggle
-<script>
-let deleteEnabled = true;
-function toggleDelete() {
-  deleteEnabled = !deleteEnabled;
-  ipcExposed.send('toggle-delete', deleteEnabled);
-}
-</script>
-Scripts -->
   <script type="module" src="./js/utils.js"></script>
 </body>
 
