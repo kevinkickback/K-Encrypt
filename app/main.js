@@ -1,14 +1,6 @@
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ IMPORTS & DECLARATIONS                                                               ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
 const { app, BrowserWindow, dialog, ipcMain, Menu, shell } = require("electron");
-const { encryptFile, decryptFile } = require("./js/encryption/fileHandler.js");
+const { encryptFile, decryptFile, toggleDelete } = require("./js/encryption/fileHandler.js");
 const path = require("node:path");
-
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ CREATE MAIN WINDOW                                                                   ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 function createMainWindow() {
 
@@ -21,6 +13,7 @@ function createMainWindow() {
 			sandbox: true,
 			contextIsolation: true,
 			nodeIntegration: false,
+			devTools: !app.isPackaged,
 			preload: path.join(__dirname, 'js', 'preload.js')
 		}
 	});
@@ -39,7 +32,7 @@ function createMainWindow() {
 
 	// Adjust window size if devTools are enabled
 	mainWindow.webContents.on("devtools-opened", () => {
-		mainWindow.setSize(800, 800, mainWindow.getSize()[1]);
+		mainWindow.setSize(800, 500, mainWindow.getSize()[1]);
 	});
 
 	// Links open externaly if target="_blank"
@@ -54,10 +47,6 @@ function createMainWindow() {
 	// Return mainWindow for use outside of function
 	return mainWindow;
 }
-
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ CREATE MODAL WINDOW                                                                  ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 function createModalWindow(type, menu) {
 
@@ -123,10 +112,6 @@ function createModalWindow(type, menu) {
 	return modalWindow;
 }
 
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ APP & WINDOW BEHAVIOR                                                                ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
 // Disabe the native menu bar
 Menu.setApplicationMenu(null);
 
@@ -153,55 +138,43 @@ app.on("window-all-closed", () => {
 	}
 });
 
-
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ OPEN MODAL WINDOW                                                                    ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
+// Open modal window
 ipcMain.on('modalWindow', (event, type, menu) => {
 	createModalWindow(type, menu);
 });
 
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ ENCYPTION                                                                            ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
 // Encrypt file
 ipcMain.handle("encrypt-file", async (event, { fileLocation, password }) => {
-	const result = await encryptFile(fileLocation, password);
-	return result;
+	const newFileLocation = await encryptFile(fileLocation, password);
+	return { newFileLocation };
 });
 
 // Decrypt file
 ipcMain.handle("decrypt-file", async (event, { fileLocation, password }) => {
-	const result = await decryptFile(fileLocation, password);
-	return result;
+	try {
+		const newFileLocation = await decryptFile(fileLocation, password);
+		return { newFileLocation };
+	} catch (error) {
+		console.error("Decryption error:", error.message);
+		throw error;
+	}
 });
 
-// ╔══════════════════════════════════════════════════════════════════════════════════════╗
-// ║ ALERT NOTIFICATIONS                                                                  ║
-// ╚══════════════════════════════════════════════════════════════════════════════════════╝
+// Notification handler
+ipcMain.handle("notify", (event, { type, message }) => {
+	const dialogType = type === "error" ? "error" : "info";
+	const returnValue = type === "error" ? "failure" : type === "mixed" ? "mixed" : "success";
 
-// Success alert handler
-ipcMain.handle("notify-success", (event, message) => {
 	dialog.showMessageBox(mainWindow, {
-		type: "info",
+		type: dialogType,
 		buttons: ["OK"],
-		title: "Success",
-		message: message,
+		message: message
 	});
 
-	return "success";
+	return returnValue;
 });
 
-// Error alert handler
-ipcMain.handle("notify-error", (event, message) => {
-	dialog.showMessageBox(mainWindow, {
-		type: "error",
-		buttons: ["OK"],
-		title: "Error",
-		message: message,
-	});
-
-	return "failure";
+// Toggle delete original file
+ipcMain.on('toggle-delete', (event, enabled) => {
+	toggleDelete(enabled);
 });
