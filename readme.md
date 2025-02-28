@@ -10,7 +10,7 @@ K Encrypt is a simple and user-friendly file encryption tool.
 (Only Windows app is provided. Mac and Linux versions must be compiled by the user.)
 
 ## Downloads
-* Latest Version: 1.1.2 [Download Now](https://github.com/kevinkickback/K-Encrypt/releases/download/v1.1.2/K-Encrypt-windows-v1.1.2.exe)
+* Latest Version: 1.1.2 [Download Now](https://github.com/kevinkickback/K-Encrypt/releases/download/v1.2.0/K-Encrypt-windows-v1.2.0.exe)
 
 ## How to Use
 1. Open the K Encrypt application.
