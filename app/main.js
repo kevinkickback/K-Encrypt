@@ -44,7 +44,6 @@ function createMainWindow() {
 	// Set custom menu for mainWindow (or use null to hide)
 	mainWindow.setMenu(null);
 
-	// Return mainWindow for use outside of function
 	return mainWindow;
 }
 
@@ -108,7 +107,6 @@ function createModalWindow(type, menu) {
 		modalWindow.setMenu(null);
 	}
 
-	// Return modalWindow for use outside of function
 	return modalWindow;
 }
 

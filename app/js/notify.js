@@ -1,28 +1,22 @@
-// DOM elements and sound effects
 const passwordInput = document.querySelector("#password-input");
 const passwordInput2 = document.querySelector("#password-input-2");
 const browseBtn = document.querySelector("#selectFileBtn");
 const successSfx = new Audio("./sfx/success.mp3");
 const errorSfx = new Audio("./sfx/failure.mp3");
-
-// Sound settings
 let soundsEnabled = true;
 
-// Play sound if enabled
 function playSound(sound) {
     if (soundsEnabled) {
         sound.play().catch(err => console.error("Error playing sound:", err));
     }
 }
 
-// UI feedback functions
 function addTemporaryClass(element, className, duration = 500) {
     playSound(errorSfx);
     element.classList.add(className);
     setTimeout(() => element.classList.remove(className), duration);
 }
 
-// Export UI feedback functions
 export const noFilesSelected = () => addTemporaryClass(browseBtn, "flash-file-select", 1500);
 export const passwordError = () => addTemporaryClass(passwordInput, "shake-password-box");
 export const passwordError2 = () => addTemporaryClass(passwordInput2, "shake-password-box");
@@ -38,7 +32,6 @@ export async function alert(type, message) {
     return ipcExposed.invoke("notify", { type, message });
 }
 
-// Toggle sound effects
 export function toggleSounds(enabled) {
     soundsEnabled = enabled;
     return soundsEnabled;
@@ -100,7 +93,6 @@ function getErrorMessage(reason, isEncryption, count = 1, forMixedResults = fals
     return messages[reason][isSingle ? "single" : "multiple"];
 }
 
-// Result handling functions
 export const groupFailuresByReason = failures =>
     failures.reduce((groups, failure) => {
         const reason = failure.reason;
@@ -144,7 +136,6 @@ async function handleMixedResults(success, failures, operation, isEncryption) {
     await alert("mixed", `${successPart}\n${failurePart}`);
 }
 
-// Main result handler
 export async function showCombinedResults(results, operationType) {
     const { success, failure } = results;
     const isEncryption = operationType === "encrypt-file";

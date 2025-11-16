@@ -3,21 +3,16 @@ const path = require("node:path");
 const fs = require("node:fs");
 const { pipeline } = require("node:stream/promises");
 const { Transform } = require("node:stream");
-
-// File signature constants and stream configuration
 const FILE_SIGNATURE = Buffer.from("K-ENCRYPT");
 const FILE_SIGNATURE_LENGTH = FILE_SIGNATURE.length;
 const encHighWaterMark = 1024 * 1024 * 100;
 const decHighWaterMark = encHighWaterMark + 32;
-
 let deleteEnabled = true;
 
-// Toggle file deletion setting
 function toggleDelete(enabled) {
 	deleteEnabled = enabled;
 }
 
-// Create transform stream for encryption/decryption
 const createCryptoTransform = (operation, password, outputFile) => {
 	return new Transform({
 		transform(chunk, encoding, callback) {
@@ -34,7 +29,6 @@ const createCryptoTransform = (operation, password, outputFile) => {
 	});
 };
 
-// Verify file signature
 async function verifyFileSignature(fileLocation, expectEncrypted) {
 	const headerBuffer = Buffer.alloc(FILE_SIGNATURE_LENGTH);
 	const fileHandle = await fs.promises.open(fileLocation, 'r');
@@ -57,7 +51,6 @@ async function verifyFileSignature(fileLocation, expectEncrypted) {
 	}
 }
 
-// File encryption with signature verification
 async function encryptFile(fileLocation, password) {
 	const { dir, ext, name } = path.parse(fileLocation);
 	const fileName = name.toLowerCase();
@@ -92,7 +85,7 @@ async function encryptFile(fileLocation, password) {
 	}
 }
 
-// File decryption with signature verification
+
 async function decryptFile(encFileLocation, password) {
 	const { dir, ext, name } = path.parse(encFileLocation);
 	let fileName = name.toLowerCase();

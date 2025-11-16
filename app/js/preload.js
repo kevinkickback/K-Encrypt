@@ -1,6 +1,5 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-// Expose IPC renderer methods
 contextBridge.exposeInMainWorld("ipcExposed", {
 	send: (channel, ...args) => {
 		ipcRenderer.send(channel, ...args);
